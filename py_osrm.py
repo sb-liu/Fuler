@@ -40,6 +40,5 @@ class Py_osmr():
             raise ValueError(
                 'Error: Repose ' + str(req.status_code) + '\n' + 'from URL: ' + url
             )
-        print(url)
         #response_json = json.loads(req.json(), encoding='utf-8')
         return req.json()
