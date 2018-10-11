@@ -10,22 +10,24 @@ def view_steps_to_route(json_response):
     result = []
     for step in to_parse:
         dist = step['distance']
-        if step['maneuver']['type'] != 'arrive':
-            word_dictation = step['maneuver']['modifier'] +' '+step['maneuver']['type']
+        step_type = step['maneuver']['type']
+        special_step_types = ['arrive', 'depart']
+        if step_type in special_step_types:
+            word_dictation = step_type
         else:
-            word_dictation = 'arrive'
+            word_dictation = step['maneuver']['modifier'] +' '+step['maneuver']['type']
         location = step['name']
         result.append((dist, word_dictation, location))
     return result
 
 if __name__ == "__main__":
-    start = ('-79.25082550000002','43.77194799999999')
-    to = ('-79.24355109999999','43.7575673')
+    start = ('-70','41')
+    to = ('-72','42')
 
     endpoint = 'https://router.project-osrm.org'
     # routes, legs, legs, steps
     # to get to 
     wrapper = Py_osmr(endpoint)
-    temp = wrapper.route(start_coord=('13.414167165756226','52.52167215019524'), end_coord=('13.4197763','52.5003103'),steps=True)
+    temp = wrapper.route(start_coord=start, end_coord=to,steps=True)
     print(view_steps_to_route(temp))
     # print(json.dumps(temp, indent=2))
